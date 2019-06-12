@@ -1,0 +1,129 @@
+<!doctype html>
+<!--只做一个模板，样式就不做了-->
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="css/bootstrap-3.3.7.min.css" th:href="@{/static/css/bootstrap-3.3.7.min.css}">
+<script type="text/javascript" src="js/jquery-2.1.1.min.js" th:src="@{/static/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+
+</style>
+</head>
+<body>
+ <h1>Twitter bootstrap tutorial</h1>
+        <nav class="navbar navbar-inverse">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Brand</a>
+    </div>
+    <div id="navbar-menu" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="#" th:href="@{/{id}/home(id=${userId})}">主页</a></li>                            
+        </ul>
+    </div>
+</nav>
+ 
+<div id="container">
+	<div class="col-xs-3" id="myScrollspy"> 
+		<div class="list-group" id="div-list">
+			<a id="a1" href="#"  class="list-group-item active">个人资料</a>
+			<a id="a2" href="#"  class="list-group-item">修改密码</a>
+			<a id="a3" href="#"  class="list-group-item">我的关注</a>
+			<a id="a4" href="#"  class="list-group-item">我的粉丝</a>
+			<a id="a5" href="#"  class="list-group-item">修改个人资料</a>
+		</div>             
+	</div>
+	    
+<div class="col-xs-9">
+	<div id='tab'>
+	</div>
+
+
+</div>
+</div>
+<!--  -->
+<div id="userid-contro" style="display: none;" th:value="${userId}"></div>
+<script type="text/javascript">
+	window.onload=function(){
+		getInfo();
+	};
+	//显示个人资料
+	$("#a1").click(function(){
+		//把选中状态的a标签设置为未选中
+		$("#div-list a[class='list-group-item active']").attr("class","list-group-item");
+		$("#a1").attr("class","list-group-item active");
+		getInfo();
+	});
+	function getInfo() {
+		$.ajax({
+			url: "[[@{/center/userInfo}]]" + "?userId="+$("#userid-contro").attr("value"),
+			type: "get",
+			cache: "false",
+			dataType: "html",
+			success: function(result){
+				$("#tab").empty();
+				$("#tab").append(result);
+			}
+		});
+	};
+	//修改密码面板
+	$("#a2").click(function(){
+		//把选中状态的a标签设置为未选中
+		$("#div-list a[class='list-group-item active']").attr("class","list-group-item");
+		$("#a2").attr("class","list-group-item active");
+		$.ajax({
+			url: "[[@{/center/pwd}]]"+ "?userId="+$("#userid-contro").attr("value"),
+			type: "get",
+			cache: "false",
+			dataType: "html",
+			success: function(result){
+				$("#tab").empty();
+				$("#tab").append(result);
+			}
+		});
+	});
+	//粉丝面板
+	$("#a4").click(function(){
+		//把选中状态的a标签设置为未选中
+		$("#div-list a[class='list-group-item active']").attr("class","list-group-item");
+		$("#a4").attr("class","list-group-item active");
+		$.ajax({
+			url: "[[@{/user/fans}]]"+ "?userId="+$("#userid-contro").attr("value"),
+			type: "get",
+			cache: "false",
+			dataType: "html",
+			success: function(result){
+				$("#tab").empty();
+				$("#tab").append(result);
+			}
+		});
+	});
+	//关注面板
+	$("#a3").click(function(){
+		//把选中状态的a标签设置为未选中
+		$("#div-list a[class='list-group-item active']").attr("class","list-group-item");
+		$("#a3").attr("class","list-group-item active");
+		$.ajax({
+			url: "[[@{/user/follow}]]"+ "?userId="+$("#userid-contro").attr("value"),
+			type: "get",
+			cache: "false",
+			dataType: "html",
+			success: function(result){
+				$("#tab").empty();
+				$("#tab").append(result);
+			}
+		});
+	});
+	
+	
+</script>
+</body>
+ 
+</html>

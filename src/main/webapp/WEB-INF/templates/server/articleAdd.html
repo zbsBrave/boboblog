@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>文章编辑页面</title>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js" th:src="@{/static/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript" charset="utf-8" th:src="@{/static/ueditor/ueditor.config.js}" ></script>
+<script type="text/javascript" charset="utf-8" th:src="@{/static/ueditor/ueditor.all.min.js}" > </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" th:src="@{/static/ueditor/lang/zh-cn/zh-cn.js}" ></script>
+<style type="text/css">
+	
+</style>
+</head>
+<body>
+	<form th:action="@{/article/add2}" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="userId" th:value="${userId}"/>
+		<br/>
+		博客标题: <input type="text" name="title" style="width: 200px" />
+		<br/>
+		博客简介: <input type="text" name="content" style="width: 450px" />
+		<br/>
+		新增类别: <input type="text" id="type-input" style="width: 100px" /><button type="button" id="button-addType"  onclick="addType()">添加</button>
+		<br/>
+		博客类别: <select id="type-select" class="easyui-combobox" name="type" style="width: 160px">
+								<option value="">--请选择博客类别--</option>
+								<option th:each="type_:${types}" th:text="${type_}"></option>
+			   </select>
+		<br/>
+		<script id="editor" type="text/plain" name="blogtext" style="width:1024px;height:500px;"></script>
+		<input type="submit" value="发表博客"></input>
+	</form>
+	
+<script type="text/javascript">
+	var base_dir = "[[@{/}]]";
+	//实例化编辑器
+	//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+	var ue = UE.getEditor('editor');
+	UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+	UE.Editor.prototype.getActionUrl = function(action) {
+	    if (action == 'uploadimage') {
+	        return base_dir+'ueditor/uploadImage';
+	    } else if (action == 'uploadvideo') {
+	        return '';
+	    } else {
+	        return this._bkGetActionUrl.call(this, action);
+	    }
+	};
+	function addType(){
+		var newType = $.trim($("#type-input").val());
+		if(newType == null || newType == undefined || newType ==''){
+			alert("新类别不能为空");
+		}else{
+			$("#type-select").append("<option>"+newType+"</option>");
+		};
+	};
+</script>
+</body>
+</html>

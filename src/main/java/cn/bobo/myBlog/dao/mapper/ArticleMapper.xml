@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bobo.myBlog.dao.mapper.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="cn.bobo.myBlog.pojo.Article" >
+    <id column="articleId" property="articleid" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="article_time" property="articleTime" jdbcType="TIMESTAMP" />
+    <result column="star" property="star" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="clickCount" property="clickcount" jdbcType="INTEGER" />
+    <result column="review_id" property="reviewId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.bobo.myBlog.pojo.Article" extends="BaseResultMap" >
+    <result column="blogtext" property="blogtext" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    articleId, user_id, article_time, star, type, title, content, clickCount, review_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    blogtext
+  </sql>
+  <select id="geTypes" parameterType="int" resultType="string">
+  	SELECT TYPE FROM article WHERE user_id = #{userid} GROUP BY type
+  </select>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.bobo.myBlog.pojo.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limit != 0">
+      limit #{start},#{limit}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.bobo.myBlog.pojo.ArticleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limit != 0">
+      limit #{start},#{limit}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from article
+    where articleId = #{articleid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from article
+    where articleId = #{articleid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.bobo.myBlog.pojo.ArticleExample" >
+    delete from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.bobo.myBlog.pojo.Article" >
+    insert into article (articleId, user_id, article_time, 
+      star, type, title, 
+      content, clickCount, review_id, 
+      blogtext)
+    values (#{articleid,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{articleTime,jdbcType=TIMESTAMP}, 
+      #{star,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{clickcount,jdbcType=INTEGER}, #{reviewId,jdbcType=INTEGER}, 
+      #{blogtext,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.bobo.myBlog.pojo.Article" >
+  	<selectKey keyProperty="articleid" order="AFTER" resultType="int">
+  		SELECT LAST_INSERT_ID()
+  	</selectKey>
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="articleid != null" >
+        articleId,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="articleTime != null" >
+        article_time,
+      </if>
+      <if test="star != null" >
+        star,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="clickcount != null" >
+        clickCount,
+      </if>
+      <if test="reviewId != null" >
+        review_id,
+      </if>
+      <if test="blogtext != null" >
+        blogtext,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="articleid != null" >
+        #{articleid,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="articleTime != null" >
+        #{articleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="star != null" >
+        #{star,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="clickcount != null" >
+        #{clickcount,jdbcType=INTEGER},
+      </if>
+      <if test="reviewId != null" >
+        #{reviewId,jdbcType=INTEGER},
+      </if>
+      <if test="blogtext != null" >
+        #{blogtext,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.bobo.myBlog.pojo.ArticleExample" resultType="java.lang.Integer" >
+    select count(*) from article
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update article
+    <set >
+      <if test="record.articleid != null" >
+        articleId = #{record.articleid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.articleTime != null" >
+        article_time = #{record.articleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.star != null" >
+        star = #{record.star,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clickcount != null" >
+        clickCount = #{record.clickcount,jdbcType=INTEGER},
+      </if>
+      <if test="record.reviewId != null" >
+        review_id = #{record.reviewId,jdbcType=INTEGER},
+      </if>
+      <if test="record.blogtext != null" >
+        blogtext = #{record.blogtext,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update article
+    set articleId = #{record.articleid,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      article_time = #{record.articleTime,jdbcType=TIMESTAMP},
+      star = #{record.star,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      clickCount = #{record.clickcount,jdbcType=INTEGER},
+      review_id = #{record.reviewId,jdbcType=INTEGER},
+      blogtext = #{record.blogtext,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update article
+    set articleId = #{record.articleid,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      article_time = #{record.articleTime,jdbcType=TIMESTAMP},
+      star = #{record.star,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      clickCount = #{record.clickcount,jdbcType=INTEGER},
+      review_id = #{record.reviewId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.bobo.myBlog.pojo.Article" >
+    update article
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="articleTime != null" >
+        article_time = #{articleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="star != null" >
+        star = #{star,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="clickcount != null" >
+        clickCount = #{clickcount,jdbcType=INTEGER},
+      </if>
+      <if test="reviewId != null" >
+        review_id = #{reviewId,jdbcType=INTEGER},
+      </if>
+      <if test="blogtext != null" >
+        blogtext = #{blogtext,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where articleId = #{articleid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.bobo.myBlog.pojo.Article" >
+    update article
+    set user_id = #{userId,jdbcType=INTEGER},
+      article_time = #{articleTime,jdbcType=TIMESTAMP},
+      star = #{star,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      clickCount = #{clickcount,jdbcType=INTEGER},
+      review_id = #{reviewId,jdbcType=INTEGER},
+      blogtext = #{blogtext,jdbcType=LONGVARCHAR}
+    where articleId = #{articleid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.bobo.myBlog.pojo.Article" >
+    update article
+    set user_id = #{userId,jdbcType=INTEGER},
+      article_time = #{articleTime,jdbcType=TIMESTAMP},
+      star = #{star,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      clickCount = #{clickcount,jdbcType=INTEGER},
+      review_id = #{reviewId,jdbcType=INTEGER}
+    where articleId = #{articleid,jdbcType=INTEGER}
+  </update>
+</mapper>

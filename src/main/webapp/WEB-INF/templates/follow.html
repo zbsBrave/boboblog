@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>关注列表页</title>
+<link href="css/layoutit.css" rel="stylesheet" th:href="@{/static/css/layoutit.css}">
+<link rel="stylesheet" href="css/bootstrap-3.3.7.min.css" th:href="@{/static/css/bootstrap-3.3.7.min.css}">
+<script type="text/javascript" src="js/jquery-2.1.1.min.js" th:src="@{/static/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap-paginator.min.js" th:src="@{/static/js/bootstrap-paginator.min.js}"></script>
+</head>
+<body>
+
+<div  th:each="user:${list}">
+<p><i><img src="#"></i><span th:text="${user.name}">名字</span></p>
+<hr>
+</div>
+
+</body>
+</html>

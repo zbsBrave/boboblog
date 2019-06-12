@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.bobo.myBlog.dao.mapper.LoginInfoMapper">
+	<select id="getByIdcard" parameterType="string" resultType="cn.bobo.myBlog.pojo.LoginInfo">
+		select * from login_info where IdCard = #{idCard}
+	</select>
+	<select id="getByUserId" parameterType="int" resultType="cn.bobo.myBlog.pojo.LoginInfo">
+		select * from login_info where userId = #{userId}
+	</select>
+	<insert id="insert">
+		INSERT INTO login_info VALUES(#{userId},#{idCard})
+	</insert>
+	<delete id="deleteByIdCard" parameterType="string">
+		delete from login_info where IdCard = #{IdCard}
+	</delete>
+	<delete id="delByUserId" parameterType="int">
+		delete from login_info where userId = #{userId}
+	</delete>
+	<update id="updateIdcardByUserid">
+		update login_info set IdCard = #{idCard} where userId = #{userId}
+	</update>
+	<delete id="truncateTable">
+		truncate table login_info
+	</delete>
+</mapper>

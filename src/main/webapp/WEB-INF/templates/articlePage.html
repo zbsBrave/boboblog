@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>articlePage</title>
+<link rel="stylesheet" href="css/bootstrap-3.3.7.min.css" th:href="@{/static/css/bootstrap-3.3.7.min.css}">
+<script type="text/javascript" src="js/jquery-2.1.1.min.js" th:src="@{/static/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+<style type="text/css">
+	.hero-unit {
+		padding: 10px 10px 10px 0px;
+		margin : 10px 20px 10px 0px;
+	}
+	.my-page-text {
+		padding: 0px 10px 0px 0px;
+		margin : 10px 10px 10px 0px;
+	}
+
+</style>
+</head>
+<body>
+	
+<div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+
+<div class="row-fluid" >
+	<div class="col-md-2" style="padding-left: 0px;padding-right: 0px;">
+		
+		<img class="img-responsive" src="#" th:src="@{/static/pic/bobo-1.gif}" style="">
+	</div>
+	
+	<div class="col-md-10" style="padding-left: 4px;padding-right: 0px;">
+	
+		<h4 class="my-page-text">您现在的位置是：<span>博文</span>&nbsp;>&nbsp;<span th:text="${article.type}">面试</span></h4>
+		<hr style="margin : 0px 0px 0px 0px;"/>
+		<h3  th:text="${article.title}" class="my-page-text">标题</h3>
+		<p class="my-page-text"><i><img src="#"></i><span th:text="${user.name}">用户名</span> <span th:text="${#dates.format(article.articleTime,'yyyy-MM-dd HH:mm:ss')}">时间</span><span>【 <span th:text="${article.type}">类型</span> 】</span><span th:text="${article.clickcount}">520</span>人已围观</p>
+		
+		<div class="hero-unit well">
+			<div><b>简介: </b><span th:text="${article.content}"></span></div>
+		</div>
+		<div class="my-page-text" th:utext="${article.blogtext}">博文内容</div>
+		<br>
+		<br>
+		<button id="zan_cli">很赞哦！(<font id="zan_count" th:text="${article.star}">0</font>)</button>
+		<button id="pinglun_show">评论！(<font id="review_count" th:text="${count}">0</font>)</button>
+		<a href="#" id="guanZhu_id">关注</a>
+		<div>
+			<input type="text" id="pinglun_id" />
+			<button id="pinglun_bt" class="collapse" style="display: none;">发表 </button>
+		</div>
+		
+		<hr>
+		<!-- 评论区 -->
+		<div id="pinglun_content"></div>
+		
+	</div>
+</div>
+</div>
+<div id="article_id" th:text="${article.articleid}" style="display: none;"></div>
+<script type="text/javascript">
+	//发表评论
+	$("#pinglun_bt").click(function(){
+		$.ajax({
+			url: "[[@{/review/publish}]]",
+			type: "post",
+			cache: "false",
+			dataType: "json",
+			data:{
+				"articleid":$("#article_id").text(),
+				"context":$("#pinglun_id").val(),
+				"rtype":0,
+			},
+			success:function(result){
+				if(result.status == 200){//发表评论成功，更新评论数目，展示评论
+					$("#review_count").text(result.msg);
+					showPinglun();
+				}else{
+					alert(result.msg);
+				}
+			},
+		});
+	});
+	//展示评论按钮
+	$("#pinglun_show").click(function(){
+		showPinglun();
+	});
+	//展示评论
+	function showPinglun() {
+		$.ajax({
+			url: "[[@{/review/show}]]",
+			type: "post",
+			cache: "false",
+			dataType: "html",
+			data: {"articleId":$("#article_id").text()},
+			success: function(result){
+				$("#pinglun_content").empty();
+				$("#pinglun_content").append(result);
+			},
+		});
+	}
+	//关注
+	$("#guanZhu_id").click(function(){
+		$.ajax({
+			url: "[[@{/article/guanzhu}]]",
+			type: "post",
+			cache: "false",
+			dataType: "json",
+			data: {"articleId": $("#article_id").text()},
+			success: function(result){
+				alert(result.msg);
+			},
+		});
+	});
+	//点赞
+	$("#zan_cli").click(function(){
+		$.ajax({
+			url: "[[@{/article/zan}]]",
+			type: "post",
+			cache: "false",
+			dataType: "json",
+			data: {
+				"articleId": $("#article_id").text(),
+				"starCount": $("#zan_count").text(),
+			},
+			success:function (result){
+				if(result.status == 200){
+					$("#zan_count").text(result.msg);
+				}else {
+					alert(result.msg);
+				}
+			}
+		});
+	});
+	//评论区焦点
+	$("#pinglun_id").focus(function(){
+		$("#pinglun_bt").css("display","block");
+	});
+// 	$("#pinglun_id").blur(function(){
+// 		$("#pinglun_bt").css("display","none");
+// 	});
+</script>	
+	
+</body>
+</html>

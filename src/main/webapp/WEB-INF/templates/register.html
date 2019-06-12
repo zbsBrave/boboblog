@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>home-bobo</title>
+<link rel="stylesheet" href="css/bootstrap-3.3.7.min.css" th:href="@{/static/css/bootstrap-3.3.7.min.css}">
+<!-- Theme style -->
+<link rel="stylesheet" href="css/AdminLTE.css" th:href="@{/static/css/login/AdminLTE.min.css}">
+<script type="text/javascript" src="js/jquery-2.1.1.min.js" th:src="@{/static/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+</head>
+
+<body >
+	<div class="register-box">
+  <div class="register-logo">
+    <b>博客系统</b>
+  </div>
+
+  <div class="register-box-body">
+    <p class="login-box-msg">欢迎注册一个新账号</p>
+
+    <form id="registerForm">
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" placeholder="用户名" name="name">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>     
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" placeholder="密码" name="password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" placeholder="重新输入密码">
+        <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" placeholder="地址" name="adress">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="number" class="form-control" placeholder="qq号" name="qq">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" placeholder="职位" name="role">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="tel" class="form-control" placeholder="电话号码" name="phone">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="social-auth-links text-center" style="visibility: hidden" id="message">
+	    	<p style="color: red;">已注册</p>
+	    </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox"> 我同意 <a href="#">条款</a>
+            </label>
+          </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <input type="button" class="btn btn-primary btn-block btn-flat" onclick="register()" value="注册">
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+
+   
+
+  </div>
+  <!-- /.form-box -->
+</div>
+<!-- /.register-box -->
+
+
+<script>
+function register() {
+	$.ajax({
+		//有人叫你去什么地方拿个东西，对方提供的地点就是ajax的url，然后把从该地点拿到的东西来使用
+		url: "[[@{/login/doRegister}]]",
+		type: "post",
+		cache: "false",
+		dataType: "json",
+		data: $("#registerForm").serialize(),
+		success:function(result){
+			if(result.status == 200){//注册成功
+				window.location.href = [[@{/}]] + result.data.id + "/home";
+			}else if(result.status == 400){//已注册
+				alert(result.msg);
+			}
+		}
+	});
+};
+</script>  
+</body>
+</html>

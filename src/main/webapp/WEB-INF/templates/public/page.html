@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>public-page</title>
+</head>
+<!-- 注释： -->
+<body>
+		
+		<div class="timebox" th:fragment="page">
+		<!-- 这是控制timebox的样式 -->
+		<style type="text/css">
+		    .timebox { background: right top #fff; ; padding: 30px }
+			.timebox span { position: relative; line-height: 30px; padding-right: 40px; color: #999 }
+			.timebox span:after { position: absolute; content: ""; width: 2px; height: 40px; background: #e0dfdf; right: 20px }
+			.timebox li { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+			.timebox li i { position: relative; font-style: normal }
+			.timebox li i:before { content: " "; height: 10px; width: 10px; border: 2px solid #cccaca; background: #fff; position: absolute; top: 4px; left: -26px; border-radius: 50%; -webkit-transition: all .5s ease; -moz-transition: all .5s ease; -ms-transition: all .5s ease; -o-transition: all .5s ease; transition: all .5s ease; }
+			.timebox li:hover i:before { background: #080808 }
+		</style>
+			<ul>
+				<li th:each="article:${articleList}"><span>2019-02-25</span><i><a href="http://www.gaodan.net/xd/112.html"  target="_blank" th:text="${article.title}">Top sales必备的十个好习惯</a></i></li>
+			</ul>
+		</div>
+</body>
+</html>

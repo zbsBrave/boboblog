@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>轮播图</title>
+</head>
+<body>
+
+<div id="myCarousel" class="carousel slide" th:fragment="turn_pic" >
+	<!-- 轮播（Carousel）指标 -->
+	<ol class="carousel-indicators">
+	    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+	    <li data-target="#myCarousel" data-slide-to="1"></li>
+	    <li data-target="#myCarousel" data-slide-to="2"></li>
+	</ol>   
+	<!-- 轮播（Carousel）项目 -->
+	<div class="carousel-inner">
+	    <div class="item active" th:style="'background:url(' + @{/static/pic/bobo.jpg} + ');background-size:cover'">
+	        <img class="img-responsive"  th:src="@{/static/pic/bobo.jpg}" >
+	        <div class="carousel-caption">标题 1</div>
+	    </div>
+	    <div class="item" th:style="'background:url(' + @{/static/pic/bobo1.jpg} + ');background-size:cover'" >
+	        <img  class="img-responsive" th:src="@{/static/pic/bobo1.jpg}" >
+	    </div>
+	    <div class="item" >
+	        <img  class="img-responsive" src="/wp-content/uploads/2014/07/slide3.png" >
+	    </div>
+	</div>
+	<!-- 轮播（Carousel）导航 -->
+	<a class="carousel-control left" href="#myCarousel" 
+	   data-slide="prev"></a>
+	<a class="carousel-control right" href="#myCarousel" 
+	   data-slide="next"></a>
+</div>
+	
+	
+	
+
+</body>
+</html>

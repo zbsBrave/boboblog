@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="css/layoutit.css" rel="stylesheet" th:href="@{/static/css/layoutit.css}">
+<link rel="stylesheet" href="css/bootstrap-3.3.7.min.css" th:href="@{/static/css/bootstrap-3.3.7.min.css}">
+<script type="text/javascript" src="js/jquery-2.1.1.min.js" th:src="@{/static/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap-paginator.min.js" th:src="@{/static/js/bootstrap-paginator.min.js}"></script>
+</head>
+<body>
+
+
+    <div class="container">
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation" th:include="public/header :: header"></nav>
+    </div>
+    <div id="myCarousel" class="carousel slide">
+    
+	<!-- 轮播（Carousel）指标 -->
+	<ol class="carousel-indicators">
+		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		<li data-target="#myCarousel" data-slide-to="1"></li>
+		<li data-target="#myCarousel" data-slide-to="2"></li>
+	</ol>   
+	<!-- 轮播（Carousel）项目 -->
+	<div class="carousel-inner">
+		<div class="item active">
+			<img src="/static/pic/yellow.png" th:src="@{/static/pic/yellow.png}" alt="First slide">
+		</div>
+		<div class="item">
+			<img src="/wp-content/uploads/2014/07/slide2.png"  alt="Second slide">
+		</div>
+		<div class="item">
+			<img src="/wp-content/uploads/2014/07/slide3.png" alt="Third slide">
+		</div>
+	</div>
+	<!-- 轮播（Carousel）导航 -->
+	<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+	</a>
+	<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+	</a>
+</div> 
+
+
+    <div id="content" class="row-fluid">
+        <div class="col-md-9">
+            <h2>热门博客</h2>
+            <ul  class="pagination">
+                <li><a href=""><<</a></li>
+                <li><a href="">3</a></li>
+                <li class="active"><a href="">4</a></li>
+                <li><a href="">5</a></li>
+                <li><a href="">>></a></li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <h2>最新博客</h2>  
+               <ul class="nav nav-tabs nav-stacked">
+		       <li><a href='#'>Another Link 1</a></li>
+		       <li><a href='#'>Another Link 2</a></li>
+		       <li><a href='#'>Another Link 3</a></li>
+               </ul> 
+        </div>
+    </div>
+    <div class="row">
+         <div class="well  text-center">底部信息©2019</div>
+    </div>
+</body>
+</html>

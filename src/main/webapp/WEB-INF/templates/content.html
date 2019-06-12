@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>搜索结果展示页</title>
+<link href="css/layoutit.css" rel="stylesheet" th:href="@{/static/css/layoutit.css}">
+<link rel="stylesheet" href="css/bootstrap-3.3.7.min.css" th:href="@{/static/css/bootstrap-3.3.7.min.css}">
+<script type="text/javascript" src="js/jquery-2.1.1.min.js" th:src="@{/static/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+<script type="text/javascript" src="js/bootstrap-paginator.min.js" th:src="@{/static/js/bootstrap-paginator.min.js}"></script>
+</head>
+<style type="text/css">
+
+table.altrowstable {
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+    border-width: 1px;
+    border-color: #a9c6c9;
+    border-collapse: collapse;
+}
+table.altrowstable th {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+table.altrowstable td {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+.oddrowcolor{
+    background-color:#d4e3e5;
+}
+.evenrowcolor{
+    background-color:#c3dde0;
+}
+</style>
+<body>
+<div class="col-md-2"></div>
+<div class="col-md-8">
+<div th:each="article: ${list}">
+<table class="altrowstable" id="alternatecolor">
+<tr>
+    <th>作者ID</th><th>文章标题</th><th>文章内容</th><th>精彩</th>
+</tr>
+<tr>
+    <td th:text="${article.userId}"></td><td th:text="${article.title}">Text 1B</td>
+    <td th:text="${article.content}">Text 1C</td>
+    <td ><button type="button" onclick="guanzhu(this)" th:attr="articleId=${article.articleid}">关注</button>
+    <button th:attr="articleId=${article.articleid}" class="btn btn-primary" data-loading-text="Loading..." 
+   	type="button" onclick="add(this)"> 点赞(<span th:text="${article.star}"></span>)</button></td>
+
+</tr>
+</table>
+</div>
+</div>
+<div class="col-md-2"></div>
+</body>
+<script type="text/javascript">
+function guanzhu(b) {
+	$.ajax({
+		url: "[[@{/article/guanzhu}]]",
+		type: "post",
+		cache: "false",
+		dataType: "json",
+		data: {"articleId": $(b).attr("articleId")},
+		success: function(result){
+			alert(result.msg);
+		},
+	});
+};
+function add(a) {
+	$.ajax({
+		url: "[[@{/article/zan}]]",
+		type: "post",
+		cache: "false",
+		dataType: "json",
+		data: {
+			"articleId": $(a).attr("articleId"),
+			"starCount": $(a).find("span").text(),
+		},
+		success:function (result){
+			if(result.status == 200){
+				$(a).find("span").text(result.msg);
+			}else{
+				alert(result.msg);
+			}
+		}
+	});
+};
+</script>
+</html>
