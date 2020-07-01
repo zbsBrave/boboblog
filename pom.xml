@@ -9,7 +9,7 @@
     <spring.version>4.3.2.RELEASE</spring.version>
     <mybatis.version>3.4.5</mybatis.version>
     <mybatis.spring.version>1.3.1</mybatis.spring.version>
-    <mysql.version>5.1.42</mysql.version>
+    <mysql.version>8.0.16</mysql.version>
     <druid.version>1.0.12</druid.version>
     <shiro.version>1.2.2</shiro.version>
     <slf4j.version>1.7.7</slf4j.version>
