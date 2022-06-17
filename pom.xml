@@ -108,7 +108,7 @@
   	<dependency>
 	    <groupId>com.alibaba</groupId>
 	    <artifactId>fastjson</artifactId>
-	    <version>1.2.56</version>
+	    <version>1.2.83</version>
 	</dependency>
 	<!-- 导入json，用于支持SpringMVC的httpmessage -->
 	<dependency>
